@@ -1,7 +1,9 @@
 ---
 title: GitHub常用命令
 date: 2019-07-22 17:11:25
-tags:
+tags: git
+categories: git
+comments: true
 ---
 
 ### 上传更新代码
