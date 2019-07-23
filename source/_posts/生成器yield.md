@@ -5,6 +5,7 @@ tags:
 - php
 - yield
 categories: php
+comments: true
 ---
 ## 理解
 
