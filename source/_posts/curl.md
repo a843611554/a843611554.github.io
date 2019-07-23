@@ -5,7 +5,6 @@ tags:
 - php
 - curl
 categories: php
-comments: true
 ---
 
 ### 使用CURL发送请求的基本流程
@@ -47,9 +46,9 @@ curl_init() 和 curl_close() 分别是初始化CURL连接和关闭CURL连接，�
 			·CURLLOPT_HEADER设置为0表示不返回HTTP头部信息。
 
 
-{% blockquote http://www.php.net/manual/en/function.curl-setopt.php Welcome to Island Marketing %}
-CURL的选项还有很多，可以到PHP的官方网站（http://www.php.net/manual/en/function.curl-setopt.php）上查看CURL支持的所有选项列表。
-{% endblockquote %}
+
+{% link CURL的选项还有很多，可以到PHP的官方网站上查看CURL支持的所有选项列表。（点击前往） http://www.php.net/manual/en/function.curl-setopt.php  %}
+
 
 ## 获取CURL请求的输出信息
 
