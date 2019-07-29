@@ -88,7 +88,17 @@ echo ' 获取 '.$info['url'].'耗时'.$info['total_time'].'秒';
 
 curl_getinfo()函数还有一个可选择参数$opt,通过这个参数可以设置一些常量，对应到上术这个字段，如果设置了第二个参数，那么返回的只有指定的信息。例如设置$opt为CURLINFO_TOTAL_TIME，则curl_getinfo()函数只返回total_time,即总传输消耗的时间，在只需要关注某些传输信息时，设置$opt参数很有意义。
 
+## 获取curl错误信息
+
+{% codeblock lang:php %}
+if(curl_errno($ch)){
+    $msg = curl_error($ch);
+    var_dump($msg);
+}
+{% endcodeblock %}
+
 ## curl封装方法
+
 
 {% codeblock lang:php %}
  /*
