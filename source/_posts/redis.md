@@ -32,7 +32,8 @@ Redis 与其他 key - value 缓存产品有以下三个特点：
 	redis-server.exe redis.windows.conf
 	```
 	服务开启成功
-	{% asset_img 1.png %}
+
+{% asset_img 1.png %}
 
 	这时候另启一个 cmd 窗口，原来的不要关闭，不然就无法访问服务端了。
 
