@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    fastclick: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="场景在日常设计及开发中，为确保数据传输和数据存储的安全，可通过特定的算法，将数据明文加密成复杂的密文。目前主流加密手段大致可分为单向加密和双向加密。 单向加密：通过对数据进行摘要计算生成密文，密文不可逆推还原。算法代表：Base64，MD5，SHA;  双向加密：与单向加密相反，可以把密文逆推还原成明文，双向加密又分为对称加密和非对称加密。 对称加密：指数据使用者必须拥有相同的密钥才可以进行加密解">
+<meta name="keywords" content="php,RSA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RSA非对称加签">
+<meta property="og:url" content="https://a843611554.github.io/2019/07/24/非对称加签验签/index.html">
+<meta property="og:site_name" content="青茗小栈">
+<meta property="og:description" content="场景在日常设计及开发中，为确保数据传输和数据存储的安全，可通过特定的算法，将数据明文加密成复杂的密文。目前主流加密手段大致可分为单向加密和双向加密。 单向加密：通过对数据进行摘要计算生成密文，密文不可逆推还原。算法代表：Base64，MD5，SHA;  双向加密：与单向加密相反，可以把密文逆推还原成明文，双向加密又分为对称加密和非对称加密。 对称加密：指数据使用者必须拥有相同的密钥才可以进行加密解">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://a843611554.github.io/2019/07/24/非对称加签验签/1.png">
+<meta property="og:image" content="https://a843611554.github.io/2019/07/24/非对称加签验签/2.png">
+<meta property="og:updated_time" content="2019-08-03T12:43:46.479Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RSA非对称加签">
+<meta name="twitter:description" content="场景在日常设计及开发中，为确保数据传输和数据存储的安全，可通过特定的算法，将数据明文加密成复杂的密文。目前主流加密手段大致可分为单向加密和双向加密。 单向加密：通过对数据进行摘要计算生成密文，密文不可逆推还原。算法代表：Base64，MD5，SHA;  双向加密：与单向加密相反，可以把密文逆推还原成明文，双向加密又分为对称加密和非对称加密。 对称加密：指数据使用者必须拥有相同的密钥才可以进行加密解">
+<meta name="twitter:image" content="https://a843611554.github.io/2019/07/24/非对称加签验签/1.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://a843611554.github.io/2019/07/24/非对称加签验签/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>RSA非对称加签 | 青茗小栈</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">青茗小栈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">生活·技术·分享·记录</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://a843611554.github.io/2019/07/24/非对称加签验签/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="陈洪亮">
+      <meta itemprop="description" content="城南花已开，愿君永常在！">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="青茗小栈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RSA非对称加签
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-24 17:11:12" itemprop="dateCreated datePublished" datetime="2019-07-24T17:11:12+08:00">2019-07-24</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-03 20:43:46" itemprop="dateModified" datetime="2019-08-03T20:43:46+08:00">2019-08-03</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/php/" itemprop="url" rel="index"><span itemprop="name">php</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>在日常设计及开发中，为确保数据传输和数据存储的安全，可通过特定的算法，将数据明文加密成复杂的密文。目前主流加密手段大致可分为单向加密和双向加密。</p>
+<p>单向加密：通过对数据进行摘要计算生成密文，密文不可逆推还原。算法代表：Base64，MD5，SHA; </p>
+<p>双向加密：与单向加密相反，可以把密文逆推还原成明文，双向加密又分为对称加密和非对称加密。</p>
+<p>对称加密：指数据使用者必须拥有相同的密钥才可以进行加密解密，就像彼此约定的一串暗号。算法代表：DES，3DES，AES，IDEA，RC4，RC5;</p>
+<p>非对称加密：相对对称加密而言，无需拥有同一组密钥，非对称加密是一种“信息公开的密钥交换协议”。非对称加密需要公开密钥和私有密钥两组密钥，公开密钥和私有密钥是配对起来的，也就是说使用公开密钥进行数据加密，只有对应的私有密钥才能解密。这两个密钥是数学相关，用某用户密钥加密后的密文，只能使用该用户的加密密钥才能解密。如果知道了其中一个，并不能计算出另外一个。因此如果公开了一对密钥中的一个，并不会危害到另外一个密钥性质。这里把公开的密钥为公钥，不公开的密钥为私钥。算法代表：RSA。</p>
+<h2 id="简单的加密解密"><a href="#简单的加密解密" class="headerlink" title="简单的加密解密"></a>简单的加密解密</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">$private_key = <span class="string">"-----BEGIN PRIVATE KEY-----</span></span><br><span class="line"><span class="string">MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCNpEgyhjW6fR+6</span></span><br><span class="line"><span class="string">wnDKJ4QW53t0H9vTsl1qeUhDxJldUiXRp+vos31haT6s0MNLSiJ9ruPhoxVCi8P8</span></span><br><span class="line"><span class="string">0vq80torJuBrA1MrBXfEzN3+GqbDm4yQiL3yDp/sMNOU9KXQdyMQnoEhWLNMb36P</span></span><br><span class="line"><span class="string">UuQmXQf9khNiR9PsVzq58krpYtpncF2cy26Z+Mb4IUfdUrkYKjk3PdCGG7dyyj9i</span></span><br><span class="line"><span class="string">bJEMPGj7U+yiOqPetjZWrywZipJCjeABRRGnRuoKGaH399O4enWwUfF4Eq0VdqI1</span></span><br><span class="line"><span class="string">DYIh/imRCA9Y0j2SQ6F8+0jPoIQqxF+xkzBjOgXHwS7ozTFwjGyOQxzeqSwLoHFT</span></span><br><span class="line"><span class="string">GwfxMQP5AgMBAAECggEAX/NmJTPdudOBZxbJKWjThmCRtPzQAfzWY4Z9ecr4ycsY</span></span><br><span class="line"><span class="string">a4qBuUW+LfsJxjA13A8AhnuvS+8aO9ZKkj6qNLfxq0HOzS+Xa5FsrRjLWZPcXK5G</span></span><br><span class="line"><span class="string">7rJzWkKl+26oJkQE/891JZD6kQhxjdoJtjXE8GgdPZ1zHCTkXzpIQibssGWS5naj</span></span><br><span class="line"><span class="string">4myUnFbDr9cYkxEQAl9Y6klE/CbwQiR7Kx0g3UK56KA503NKaKlpSTn26MzYoHlv</span></span><br><span class="line"><span class="string">cijpMKL36o9+L5LgaMWJtio4lKN6m6t0WNIvgGQ27DDSEdi5tByv56zjX407irrq</span></span><br><span class="line"><span class="string">ggtZTSuwE7SjE7Mo6mvCQEYSRCSAUAKfr9Nvmw9QAQKBgQDtgjA6d65PWTYr6zB+</span></span><br><span class="line"><span class="string">tH8BiecfM90BK02Qhrj7ED5mrYG0EMtIORt2lC9x7udkx2OeYVNjH82PFTFLLm5f</span></span><br><span class="line"><span class="string">L72hqRu0++mJd2hwvscWsGIFwZDa/oVhTy/KG6JjbW0lG8q/LcWV+dQoV550qDZH</span></span><br><span class="line"><span class="string">LZZ2r4yDTHnqXHNTcoVt9RnogQKBgQCYq1xDspcLG3ooIoPScCCxPnmYLAyubk0p</span></span><br><span class="line"><span class="string">SlH5bW3Pfsayg+95YM1dpgSO/uhFyL6K57KaMyuHw2+uUykW0o7ScDpTdubI+e9g</span></span><br><span class="line"><span class="string">ykOC+nroL0ebq0/ciLKHhtLS5+fiZEF9qGt84qVJdKEV3Xc4U/S2BoWYSijFzGfp</span></span><br><span class="line"><span class="string">WAVPK4qfeQKBgQCKqMfpSnfcYVPr/gm43z2Ks2zYXZn4FcTZzJ1wDcKwhTlE280i</span></span><br><span class="line"><span class="string">JBzxdH/ifzxeLL3u+BkLtMR4dUHrB3duYNvP5n+DgNKN68VwlSB8EYuYmrIr+A38</span></span><br><span class="line"><span class="string">ipN25f0/GOJwmLIcPOeusET5LHYY2x+dHHNMZR6ehOZkOYcmv6RAVqjCgQKBgC3J</span></span><br><span class="line"><span class="string">93o2bibertyqvW64QpXmbwG89HC8lFf1+nAc6fp5w453E7QL3Ixh5qwct/12H+/5</span></span><br><span class="line"><span class="string">Xg/xmPS3IR/fwUsfC8cB8fxmhQFyNOGKyITYK1TIGWoPD3zNYv5S6ZhoBZxZBWty</span></span><br><span class="line"><span class="string">wApMz9YgLNAqBD/YrmSJwDfUxjXNAL1zsOP14zXBAoGAYurVwBNK70bUgTldXFZS</span></span><br><span class="line"><span class="string">X4CNXKJh40CQh7V3rtlVvGEGsMv2QXYsJUUlIDXJJYFQ9lNJfxLAHNC8/F7z1wuw</span></span><br><span class="line"><span class="string">D/by9sh7okPt7VgGZ8N0jE/0PS0jTCa22vgJIWL6b/Ig/ZXYJudbIhFOLWciXOys</span></span><br><span class="line"><span class="string">lkgZ2egh9srYHFQ6tVraMfI=</span></span><br><span class="line"><span class="string">-----END PRIVATE KEY-----"</span>;</span><br><span class="line">$public_key = <span class="string">"-----BEGIN PUBLIC KEY-----</span></span><br><span class="line"><span class="string">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjaRIMoY1un0fusJwyieE</span></span><br><span class="line"><span class="string">Fud7dB/b07JdanlIQ8SZXVIl0afr6LN9YWk+rNDDS0oifa7j4aMVQovD/NL6vNLa</span></span><br><span class="line"><span class="string">KybgawNTKwV3xMzd/hqmw5uMkIi98g6f7DDTlPSl0HcjEJ6BIVizTG9+j1LkJl0H</span></span><br><span class="line"><span class="string">/ZITYkfT7Fc6ufJK6WLaZ3BdnMtumfjG+CFH3VK5GCo5Nz3Qhhu3cso/YmyRDDxo</span></span><br><span class="line"><span class="string">+1Psojqj3rY2Vq8sGYqSQo3gAUURp0bqChmh9/fTuHp1sFHxeBKtFXaiNQ2CIf4p</span></span><br><span class="line"><span class="string">kQgPWNI9kkOhfPtIz6CEKsRfsZMwYzoFx8Eu6M0xcIxsjkMc3qksC6BxUxsH8TED</span></span><br><span class="line"><span class="string">+QIDAQAB</span></span><br><span class="line"><span class="string">-----END PUBLIC KEY-----"</span>;</span><br><span class="line"></span><br><span class="line">$pi_key =  openssl_pkey_get_private($private_key);<span class="comment">// 可用返回资源id</span></span><br><span class="line">$pu_key = openssl_pkey_get_public($public_key);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 加密数据</span></span><br><span class="line">$data = <span class="keyword">array</span>(</span><br><span class="line">    <span class="string">'id'</span> =&gt; <span class="string">'1234567890'</span>,</span><br><span class="line">    <span class="string">'name'</span> =&gt; <span class="string">'小明'</span>,</span><br><span class="line">    <span class="string">'mobile'</span> =&gt; <span class="string">'123456'</span>,</span><br><span class="line">);</span><br><span class="line">$data = json_encode($data);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"加密前的数据:"</span>.$data.<span class="string">"&lt;br/&gt;"</span>;</span><br><span class="line"></span><br><span class="line">$encrypted = <span class="string">''</span>;</span><br><span class="line">$decrypted = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">openssl_public_encrypt($data, $encrypted, $pu_key);<span class="comment">//公钥加密</span></span><br><span class="line">$encrypted = base64_encode($encrypted);<span class="comment">// base64传输</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"加密后的数据："</span>.$encrypted.<span class="string">"&lt;br/&gt;"</span>;</span><br><span class="line"></span><br><span class="line">openssl_private_decrypt(base64_decode($encrypted), $decrypted, $pi_key);<span class="comment">//私钥解密</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"解密后的数据："</span>. $decrypted.<span class="string">"&lt;br/&gt;"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>输出如下</p>
+<img src="/2019/07/24/非对称加签验签/1.png">
+
+<h2 id="php加签验签demo"><a href="#php加签验签demo" class="headerlink" title="php加签验签demo"></a>php加签验签demo</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line">$data=[</span><br><span class="line">    <span class="string">"user"</span>=&gt;<span class="string">"test"</span>,</span><br><span class="line">    <span class="string">"pass"</span>=&gt;<span class="string">"123456"</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">$sign = makeSign($data);</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"得到签名：$sign &lt;br&gt;"</span>;</span><br><span class="line"></span><br><span class="line">$data[<span class="string">'sign'</span>]=$sign;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(verify($data))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"验签成功"</span>;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"验签失败"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//加签</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeSign</span><span class="params">($params)</span> </span>&#123;</span><br><span class="line">    $params = array_filter($params, <span class="function"><span class="keyword">function</span> <span class="params">($val, $key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ($val === <span class="string">""</span> || $key === <span class="string">"sign"</span>) ? <span class="keyword">false</span> : <span class="keyword">true</span>;</span><br><span class="line">    &#125;, ARRAY_FILTER_USE_BOTH);</span><br><span class="line"></span><br><span class="line">    ksort($params); <span class="comment">//数组排序</span></span><br><span class="line"></span><br><span class="line">    $data = urldecode(http_build_query($params)); <span class="comment">//请求参数处理</span></span><br><span class="line"></span><br><span class="line">    $pri_key = <span class="string">"-----BEGIN PRIVATE KEY-----</span></span><br><span class="line"><span class="string">MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCNpEgyhjW6fR+6</span></span><br><span class="line"><span class="string">wnDKJ4QW53t0H9vTsl1qeUhDxJldUiXRp+vos31haT6s0MNLSiJ9ruPhoxVCi8P8</span></span><br><span class="line"><span class="string">0vq80torJuBrA1MrBXfEzN3+GqbDm4yQiL3yDp/sMNOU9KXQdyMQnoEhWLNMb36P</span></span><br><span class="line"><span class="string">UuQmXQf9khNiR9PsVzq58krpYtpncF2cy26Z+Mb4IUfdUrkYKjk3PdCGG7dyyj9i</span></span><br><span class="line"><span class="string">bJEMPGj7U+yiOqPetjZWrywZipJCjeABRRGnRuoKGaH399O4enWwUfF4Eq0VdqI1</span></span><br><span class="line"><span class="string">DYIh/imRCA9Y0j2SQ6F8+0jPoIQqxF+xkzBjOgXHwS7ozTFwjGyOQxzeqSwLoHFT</span></span><br><span class="line"><span class="string">GwfxMQP5AgMBAAECggEAX/NmJTPdudOBZxbJKWjThmCRtPzQAfzWY4Z9ecr4ycsY</span></span><br><span class="line"><span class="string">a4qBuUW+LfsJxjA13A8AhnuvS+8aO9ZKkj6qNLfxq0HOzS+Xa5FsrRjLWZPcXK5G</span></span><br><span class="line"><span class="string">7rJzWkKl+26oJkQE/891JZD6kQhxjdoJtjXE8GgdPZ1zHCTkXzpIQibssGWS5naj</span></span><br><span class="line"><span class="string">4myUnFbDr9cYkxEQAl9Y6klE/CbwQiR7Kx0g3UK56KA503NKaKlpSTn26MzYoHlv</span></span><br><span class="line"><span class="string">cijpMKL36o9+L5LgaMWJtio4lKN6m6t0WNIvgGQ27DDSEdi5tByv56zjX407irrq</span></span><br><span class="line"><span class="string">ggtZTSuwE7SjE7Mo6mvCQEYSRCSAUAKfr9Nvmw9QAQKBgQDtgjA6d65PWTYr6zB+</span></span><br><span class="line"><span class="string">tH8BiecfM90BK02Qhrj7ED5mrYG0EMtIORt2lC9x7udkx2OeYVNjH82PFTFLLm5f</span></span><br><span class="line"><span class="string">L72hqRu0++mJd2hwvscWsGIFwZDa/oVhTy/KG6JjbW0lG8q/LcWV+dQoV550qDZH</span></span><br><span class="line"><span class="string">LZZ2r4yDTHnqXHNTcoVt9RnogQKBgQCYq1xDspcLG3ooIoPScCCxPnmYLAyubk0p</span></span><br><span class="line"><span class="string">SlH5bW3Pfsayg+95YM1dpgSO/uhFyL6K57KaMyuHw2+uUykW0o7ScDpTdubI+e9g</span></span><br><span class="line"><span class="string">ykOC+nroL0ebq0/ciLKHhtLS5+fiZEF9qGt84qVJdKEV3Xc4U/S2BoWYSijFzGfp</span></span><br><span class="line"><span class="string">WAVPK4qfeQKBgQCKqMfpSnfcYVPr/gm43z2Ks2zYXZn4FcTZzJ1wDcKwhTlE280i</span></span><br><span class="line"><span class="string">JBzxdH/ifzxeLL3u+BkLtMR4dUHrB3duYNvP5n+DgNKN68VwlSB8EYuYmrIr+A38</span></span><br><span class="line"><span class="string">ipN25f0/GOJwmLIcPOeusET5LHYY2x+dHHNMZR6ehOZkOYcmv6RAVqjCgQKBgC3J</span></span><br><span class="line"><span class="string">93o2bibertyqvW64QpXmbwG89HC8lFf1+nAc6fp5w453E7QL3Ixh5qwct/12H+/5</span></span><br><span class="line"><span class="string">Xg/xmPS3IR/fwUsfC8cB8fxmhQFyNOGKyITYK1TIGWoPD3zNYv5S6ZhoBZxZBWty</span></span><br><span class="line"><span class="string">wApMz9YgLNAqBD/YrmSJwDfUxjXNAL1zsOP14zXBAoGAYurVwBNK70bUgTldXFZS</span></span><br><span class="line"><span class="string">X4CNXKJh40CQh7V3rtlVvGEGsMv2QXYsJUUlIDXJJYFQ9lNJfxLAHNC8/F7z1wuw</span></span><br><span class="line"><span class="string">D/by9sh7okPt7VgGZ8N0jE/0PS0jTCa22vgJIWL6b/Ig/ZXYJudbIhFOLWciXOys</span></span><br><span class="line"><span class="string">lkgZ2egh9srYHFQ6tVraMfI=</span></span><br><span class="line"><span class="string">-----END PRIVATE KEY-----"</span>; <span class="comment">//私钥</span></span><br><span class="line"></span><br><span class="line">    !$pri_key &amp;&amp; <span class="keyword">exit</span>(<span class="string">'私钥为空'</span>);</span><br><span class="line"></span><br><span class="line">    $priv_key_id = openssl_get_privatekey($pri_key);</span><br><span class="line"></span><br><span class="line">    !$priv_key_id &amp;&amp; <span class="keyword">exit</span>(<span class="string">'私钥不可用'</span>);</span><br><span class="line"></span><br><span class="line">    $flag = openssl_sign($data, $signature, $priv_key_id, OPENSSL_ALGO_SHA256);</span><br><span class="line"></span><br><span class="line">    !$flag &amp;&amp; <span class="keyword">exit</span>(<span class="string">'加签失败'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> base64_encode($signature);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//验签</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">verify</span><span class="params">($params)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        $signature = str_replace(<span class="string">" "</span>, <span class="string">"+"</span>, $params[<span class="string">"sign"</span>]);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        $params = array_filter($params, <span class="function"><span class="keyword">function</span> <span class="params">($val, $key)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> ($val === <span class="string">""</span> || $key === <span class="string">"sign"</span>) ? <span class="keyword">false</span> : <span class="keyword">true</span>;</span><br><span class="line">        &#125;, ARRAY_FILTER_USE_BOTH);</span><br><span class="line"></span><br><span class="line">        ksort($params);</span><br><span class="line"></span><br><span class="line">        $data = urldecode(http_build_query($params));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        $pub_key = <span class="string">"-----BEGIN PUBLIC KEY-----</span></span><br><span class="line"><span class="string">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjaRIMoY1un0fusJwyieE</span></span><br><span class="line"><span class="string">Fud7dB/b07JdanlIQ8SZXVIl0afr6LN9YWk+rNDDS0oifa7j4aMVQovD/NL6vNLa</span></span><br><span class="line"><span class="string">KybgawNTKwV3xMzd/hqmw5uMkIi98g6f7DDTlPSl0HcjEJ6BIVizTG9+j1LkJl0H</span></span><br><span class="line"><span class="string">/ZITYkfT7Fc6ufJK6WLaZ3BdnMtumfjG+CFH3VK5GCo5Nz3Qhhu3cso/YmyRDDxo</span></span><br><span class="line"><span class="string">+1Psojqj3rY2Vq8sGYqSQo3gAUURp0bqChmh9/fTuHp1sFHxeBKtFXaiNQ2CIf4p</span></span><br><span class="line"><span class="string">kQgPWNI9kkOhfPtIz6CEKsRfsZMwYzoFx8Eu6M0xcIxsjkMc3qksC6BxUxsH8TED</span></span><br><span class="line"><span class="string">+QIDAQAB</span></span><br><span class="line"><span class="string">-----END PUBLIC KEY-----"</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        !$pub_key &amp;&amp; <span class="keyword">exit</span>(<span class="string">'公钥不存在'</span>);</span><br><span class="line"></span><br><span class="line">        $pub_key_id = openssl_get_publickey($pub_key);</span><br><span class="line"></span><br><span class="line">        !$pub_key_id &amp;&amp; <span class="keyword">exit</span>(<span class="string">'公钥不可用'</span>);</span><br><span class="line"></span><br><span class="line">        $flag = openssl_verify($data, base64_decode($signature), $pub_key_id, OPENSSL_ALGO_SHA256);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> $flag === <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<img src="/2019/07/24/非对称加签验签/2.png">
+
+
+<h2 id="详细RSA原理"><a href="#详细RSA原理" class="headerlink" title="详细RSA原理"></a>详细RSA原理</h2><p>传送门：<a href="https://blog.csdn.net/qq_42039281/article/details/89680263" target="_blank" rel="noopener">点击前往</a></p>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/RSA/" rel="tag"># RSA</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/24/php获取一个类里面的所有方法/" rel="next" title="php获取一个类里面的所有方法">
+                <i class="fa fa-chevron-left"></i> php获取一个类里面的所有方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/29/redis/" rel="prev" title="redis">
+                redis <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NTUxMi8yMjAyNA"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="陈洪亮">
+  
+  <p class="site-author-name" itemprop="name">陈洪亮</p>
+  <div class="site-description motion-element" itemprop="description">城南花已开，愿君永常在！</div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+        </a>
+      </div>
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/a843611554" title="GitHub &rarr; https://github.com/a843611554" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:a843611554@foxmail.com" title="E-Mail &rarr; mailto:a843611554@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://weibo.com/u/5958552239" title="Weibo &rarr; https://weibo.com/u/5958552239" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单的加密解密"><span class="nav-number">2.</span> <span class="nav-text">简单的加密解密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#php加签验签demo"><span class="nav-number">3.</span> <span class="nav-text">php加签验签demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#详细RSA原理"><span class="nav-number">4.</span> <span class="nav-text">详细RSA原理</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈洪亮</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+
+<script>
+  window.livereOptions = {
+    refer: '2019/07/24/非对称加签验签/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script>
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>
