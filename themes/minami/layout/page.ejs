@@ -1,0 +1,30 @@
+<div id="article-banner">
+    <h2><%- page.title %></h2>
+    <p class="post-date"><%- date(page.date, "MM/DD/YYYY") %></p>
+</div>
+<main class="app-body flex-box">
+    <article class="post-article">
+        <section class="markdown-content">
+            <%- page.content %>
+        </section>
+        </br>
+        <div class="article-footer">
+            </br>
+            <p>本文可能过时失效，若需更新，请留言</p>
+            <p>本博客文章均为原创，转载请注明来源</p>
+        </div>
+        <%- partial('_partial/nav') %>
+        <% if (theme.gitment) { %>
+            <div id="comments"></div>
+        <% } %>
+    </article>
+    <% if (theme.catalog) { %>
+        <%- partial('_partial/catalog') %>
+    <% } %>
+</main>
+
+<%- partial('_widget/banner') %>
+
+<% if (theme.gitment) { %>
+    <%- partial('_widget/gitment') %>
+<% } %>

@@ -1,0 +1,15 @@
+<script type="application/javascript">
+(function(){
+    var gitmentConfig = "<%= theme['gitment_owner'] %>"
+    if (gitmentConfig !== 'undefined') {
+        var gitment = new Gitment({
+            id: "<%- page.id %>",
+            owner: "<%= theme['gitment_owner'] %>",
+            repo: "<%= theme['gitment_repo'] %>",
+            oauth: {client_id: "<%= theme['gitment_oauth_id'] %>", client_secret: "<%= theme['gitment_oauth_secret'] %>"},
+            theme: {render(state, instance){const container = document.createElement('div');container.lang="en-US";container.className='gitment-container gitment-root-container';container.appendChild(instance.renderHeader(state, instance));container.appendChild(instance.renderEditor(state, instance));container.appendChild(instance.renderComments(state, instance));container.appendChild(instance.renderFooter(state, instance));return container;}}
+        })
+        gitment.render(document.getElementById('comments'))
+    }
+})();
+</script>

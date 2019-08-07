@@ -1,0 +1,21 @@
+<div id="article-banner">
+    <h2>Index</h2>
+    <p class="post-date">文章列表</p>
+</div>
+<main class="app-body">
+    <% page.posts.each(function(post) { %>
+        <article class="article-card">
+            <h2 class="article-head">
+                <a href="<%- url_for(post.path) %>"><%- post.title %></a>
+            </h2>
+            <p class="article-date"><%- date(post.date, "LL") %></p>
+            <a class="more" href="<%- url_for(post.path) %>"><%- theme.excerpt_link %></a>
+        </article>
+    <% }) %>
+
+    <% if (page.total > 1){ %>
+        <%- partial('_partial/pager') %>
+    <% } %>
+</main>
+
+<%- partial('_widget/banner') %>

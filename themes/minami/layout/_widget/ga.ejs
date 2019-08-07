@@ -1,0 +1,11 @@
+<script type="application/javascript">
+	if (navigator.doNotTrack === '1') {
+		// void
+	} else {
+	    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};
+	    ga.l=+new Date;
+	    ga('create', "<%- theme.googleanalytics_id %>", 'auto');
+	    ga('send', 'pageview');
+	}
+</script>
+<script async src="<%- theme.googleanalytics_uri %>" type="application/javascript"></script>

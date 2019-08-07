@@ -1,0 +1,69 @@
+excerpt_link: Read_More
+
+# menu on the page
+menu:
+ Home: /
+ Archive: /archive/
+
+# article catalog
+catalog: true
+
+# gitment
+gitment: false
+gitment_owner: 
+gitment_repo: 
+gitment_oauth_id: 
+gitment_oauth_secret: 
+
+# google analytics
+# footer.ejs
+googleanalytics: false
+googleanalytics_id: 
+googleanalytics_uri: https://www.google-analytics.com/analytics.js
+
+##############################################################
+# the following is the variable of dir
+# write the dir you use
+
+# website property
+# footer.ejs
+website_name: 陈黎姿博客
+website_uri: https://chenlizz.github.io/
+
+# favicon.ico
+# head.ejs
+favicon: /deps/partial/imgs/favicon.ico
+
+# banner image
+# /archive.ejs and /page.ejs
+uri_banner: /deps/partial/imgs/banner.jpg
+
+# style.css
+# head.ejs
+uri_mincss_style: /deps/css/style.css
+
+# function.min.js
+# footer.ejs
+uri_minjs_function: /deps/js/function.min.js
+
+# jquery.min.js
+# head.ejs
+#uri_minjs_jquery: //cdn.bootcss.com/jquery/3.2.1/jquery.min.js
+uri_minjs_jquery: /deps/js/jquery.min.js
+
+# nprogress css+js
+# head.ejs
+#uri_mincss_nprogress: //cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css
+uri_mincss_nprogress: /deps/partial/mincss/nprogress.min.css
+#uri_minjs_nprogress: //cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js
+uri_minjs_nprogress: /deps/js/nprogress.min.js
+
+# prism css+js
+# head.ejs
+uri_mincss_prism: /deps/partial/mincss/prism.min.css
+uri_minjs_prism: /deps/js/prism.min.js
+
+# gitment css+js
+# head.ejs
+uri_mincss_gitment: /deps/partial/mincss/gitment.min.css
+uri_minjs_gitment: /deps/js/gitment.min.js

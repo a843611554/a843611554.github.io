@@ -1,0 +1,28 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <% if (theme.favicon){ %>
+    <link href="<%- theme.favicon %>" type="image/x-icon" rel="icon">
+    <% } %>
+    <title>
+    <% if (page.title){ %>
+        <%= page.title %> | <%= config.title %>
+    <% } else { %>
+        <%= config.title %>
+    <% } %>
+    </title>
+        <link  href="<%- theme.uri_mincss_style %>"      type="text/css" rel="stylesheet">
+        <script src="<%- theme.uri_minjs_jquery %>"      type="application/javascript"></script>
+        <link  href="<%- theme.uri_mincss_nprogress %>"  type="text/css" rel="stylesheet">
+        <script src="<%- theme.uri_minjs_nprogress %>"   type="application/javascript"></script>
+    <% if (page.title){ %>
+        <link  href="<%- theme.uri_mincss_prism %>"      type="text/css" rel="stylesheet">
+        <script src="<%- theme.uri_minjs_prism %>"       type="application/javascript"></script>
+        <% if (theme.gitment) { %>
+        <link  href="<%- theme.uri_mincss_gitment %>"    type="text/css" rel="stylesheet">
+        <script src="<%- theme.uri_minjs_gitment %>"     type="application/javascript"></script>
+        <% } %>
+    <% } %>
+</head>

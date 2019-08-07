@@ -1,0 +1,11 @@
+<footer class="app-footer">
+    <p class="copyright" align="center">
+        &copy; <%= new Date().getFullYear() %> <%- theme.website_name %> <a>(<%- theme.website_uri %>)<a/>
+    </p>
+</footer>
+
+<script src="<%- theme.uri_minjs_function %>" type="application/javascript"></script>
+
+<% if (theme.googleanalytics) { %>
+    <%- partial('_widget/ga') %>
+<% } %>
