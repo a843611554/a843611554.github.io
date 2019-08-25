@@ -85,8 +85,29 @@ fclose($fp);
 这里只是简单的做一个读取写入文件的操作，实际工作中，应该去捕获异常，和更多的错误处理，这里就简单的写下基本的逻辑
 
 ## 运行index.php的结果
+```php
+<?php
+
+ignore_user_abort(true); // 无视用户浏览器
+
+set_time_limit(0); //php不设置超时时间
+
+$interval = 60*10;//休息时间
+
+echo "开始爬虫";
+do{
+
+$run = include 'config.php';
+if(!$run){
+	echo "功能已关闭！";
+	break; 
+} 
+
+echo "正在爬取百度热点数据...   热点时间为：".date('Y-m-d h:i:s').'<br>';
+include 'file.
+```
 {% asset_img 3.png %}
-{% asset_img 4.png %}
+{% asset_img 4r.png %}
 ## ps
 实现定时任务的方法有很多
 大多数时候会去使用linux下的定时功能去执行
