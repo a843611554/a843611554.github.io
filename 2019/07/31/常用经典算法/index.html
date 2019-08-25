@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="青茗小栈">
 <meta property="og:description" content="许多人在学习C语言的时候都写过一些有趣的算法，其实这些算法在PHP中也同样可以实现，甚至有些算法的代码比C语言中还要简洁。 冒泡排序1234567891011121314151617$list = [45,1,5,4,8,7,11,9,10,66];print_r(maopao($list));function maopao($list)&amp;#123;    $len = count($list);">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-03T12:43:46.456Z">
+<meta property="og:updated_time" content="2019-08-25T03:46:49.290Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用经典算法">
 <meta name="twitter:description" content="许多人在学习C语言的时候都写过一些有趣的算法，其实这些算法在PHP中也同样可以实现，甚至有些算法的代码比C语言中还要简洁。 冒泡排序1234567891011121314151617$list = [45,1,5,4,8,7,11,9,10,66];print_r(maopao($list));function maopao($list)&amp;#123;    $len = count($list);">
@@ -378,7 +378,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-03 20:43:46" itemprop="dateModified" datetime="2019-08-03T20:43:46+08:00">2019-08-03</time>
+                <time title="修改时间：2019-08-25 11:46:49" itemprop="dateModified" datetime="2019-08-25T11:46:49+08:00">2019-08-25</time>
               </span>
             
           
@@ -449,6 +449,16 @@
 
 <h2 id="斐波那契数列"><a href="#斐波那契数列" class="headerlink" title="斐波那契数列"></a>斐波那契数列</h2><p>有个人想上一个n级的台阶，每次只能迈1级或者迈2级台阶，问：这个人有多少种方法可以把台阶走完？例如：总共3级台阶，可以先迈1级再迈2级，或者先迈2级再迈1级，或者迈3次1级总共3种方式</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> jieti(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">jieti</span><span class="params">($num)</span></span>&#123;   <span class="comment">//实际上是斐波那契数列</span></span><br><span class="line">    <span class="keyword">return</span> $num&lt;<span class="number">2</span>?<span class="number">1</span>:jieti($num<span class="number">-1</span>)+jieti($num<span class="number">-2</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出</span></span><br><span class="line"><span class="number">89</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="两数之和"><a href="#两数之和" class="headerlink" title="两数之和"></a>两数之和</h2><p>给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。</p>
+<p>示例:</p>
+<p>给定 nums = [2, 7, 11, 15], target = 9</p>
+<p>因为 nums[0] + nums[1] = 2 + 7 = 9<br>所以返回 [0, 1]</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">twoSum</span><span class="params">($nums, $target)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $found = [];</span><br><span class="line">        $count = count($nums);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; $count; $i++) &#123;</span><br><span class="line">            $diff = $target - $nums[$i];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (array_key_exists($diff, $found)) &#123;</span><br><span class="line">                <span class="keyword">return</span> [$found[$diff], $i];</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            $found[$nums[$i]] = $i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//没有去使用两次循环，时间复杂度只有O(n)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="无重复字符的最长子串"><a href="#无重复字符的最长子串" class="headerlink" title="无重复字符的最长子串"></a>无重复字符的最长子串</h2><p>还没看明白，留着备份</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">$s = <span class="string">'aabccedfw'</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">'&lt;br&gt;'</span>.lengthOfLongestSubstring($s);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span><span class="params">($s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $i = <span class="number">0</span>;</span><br><span class="line">    $flag = <span class="number">0</span>;</span><br><span class="line">    $length = <span class="number">0</span>;</span><br><span class="line">    $result = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    $s_length = strlen($s);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> ($i &lt; $s_length) &#123;</span><br><span class="line"></span><br><span class="line">        $pos = strpos($s, $s&#123;$i&#125;, $flag);</span><br><span class="line">        var_dump($pos);</span><br><span class="line">        <span class="keyword">if</span> ($pos &lt; $i) &#123;</span><br><span class="line">            <span class="keyword">if</span> ($length &gt; $result) &#123;</span><br><span class="line">                $result = $length;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> ($result &gt;= $s_length - $pos - <span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> $result;</span><br><span class="line">            &#125;</span><br><span class="line">            $length = $i - $pos - <span class="number">1</span>;</span><br><span class="line">            $flag = $pos + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        $i++;</span><br><span class="line">        $length++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>递归的思想，普遍存在于各种算法以及应用场景中，对于递归算法的理解加深有助于日后的算法设计以及学习。</p>
 
@@ -585,7 +595,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -606,7 +616,11 @@
         
           
         
-        <span class="site-state-item-count">2</span>
+          
+        
+          
+        
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -641,7 +655,23 @@
         
           
         
-        <span class="site-state-item-count">9</span>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -665,17 +695,6 @@
         
       
         <a href="https://github.com/a843611554" title="GitHub &rarr; https://github.com/a843611554" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
-      </span>
-    
-      <span class="links-of-author-item">
-      
-      
-        
-      
-      
-        
-      
-        <a href="mailto:a843611554@foxmail.com" title="E-Mail &rarr; mailto:a843611554@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
     
       <span class="links-of-author-item">
@@ -713,7 +732,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#冒泡排序"><span class="nav-number">1.</span> <span class="nav-text">冒泡排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速排序"><span class="nav-number">2.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#猴王算法"><span class="nav-number">3.</span> <span class="nav-text">猴王算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遍历一个文件下的所有文件和子文件夹下的文件"><span class="nav-number">4.</span> <span class="nav-text">遍历一个文件下的所有文件和子文件夹下的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从一个标准的Url提取出文件的扩展名"><span class="nav-number">5.</span> <span class="nav-text">从一个标准的Url提取出文件的扩展名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#斐波那契数列"><span class="nav-number">6.</span> <span class="nav-text">斐波那契数列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#冒泡排序"><span class="nav-number">1.</span> <span class="nav-text">冒泡排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速排序"><span class="nav-number">2.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#猴王算法"><span class="nav-number">3.</span> <span class="nav-text">猴王算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遍历一个文件下的所有文件和子文件夹下的文件"><span class="nav-number">4.</span> <span class="nav-text">遍历一个文件下的所有文件和子文件夹下的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从一个标准的Url提取出文件的扩展名"><span class="nav-number">5.</span> <span class="nav-text">从一个标准的Url提取出文件的扩展名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#斐波那契数列"><span class="nav-number">6.</span> <span class="nav-text">斐波那契数列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两数之和"><span class="nav-number">7.</span> <span class="nav-text">两数之和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无重复字符的最长子串"><span class="nav-number">8.</span> <span class="nav-text">无重复字符的最长子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>

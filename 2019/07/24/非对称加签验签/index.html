@@ -95,20 +95,20 @@
   };
 </script>
 
-  <meta name="description" content="场景在日常设计及开发中，为确保数据传输和数据存储的安全，可通过特定的算法，将数据明文加密成复杂的密文。目前主流加密手段大致可分为单向加密和双向加密。 单向加密：通过对数据进行摘要计算生成密文，密文不可逆推还原。算法代表：Base64，MD5，SHA;  双向加密：与单向加密相反，可以把密文逆推还原成明文，双向加密又分为对称加密和非对称加密。 对称加密：指数据使用者必须拥有相同的密钥才可以进行加密解">
+  <meta name="description" content="场景在日常设计及开发中，为确保数据传输和数据存储的安全，可通过特定的算法，将数据明文加密成复杂的密文。目前主流加密手段大致可分为单向加密和双向加密。 单向加密：通过对数据进行摘要计算生成密文，密文不可逆推还原。算法代表：MD5，SHA;  双向加密：与单向加密相反，可以把密文逆推还原成明文，双向加密又分为对称加密和非对称加密。 对称加密：指数据使用者必须拥有相同的密钥才可以进行加密解密，就像彼此约">
 <meta name="keywords" content="php,RSA">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RSA非对称加签">
 <meta property="og:url" content="https://a843611554.github.io/2019/07/24/非对称加签验签/index.html">
 <meta property="og:site_name" content="青茗小栈">
-<meta property="og:description" content="场景在日常设计及开发中，为确保数据传输和数据存储的安全，可通过特定的算法，将数据明文加密成复杂的密文。目前主流加密手段大致可分为单向加密和双向加密。 单向加密：通过对数据进行摘要计算生成密文，密文不可逆推还原。算法代表：Base64，MD5，SHA;  双向加密：与单向加密相反，可以把密文逆推还原成明文，双向加密又分为对称加密和非对称加密。 对称加密：指数据使用者必须拥有相同的密钥才可以进行加密解">
+<meta property="og:description" content="场景在日常设计及开发中，为确保数据传输和数据存储的安全，可通过特定的算法，将数据明文加密成复杂的密文。目前主流加密手段大致可分为单向加密和双向加密。 单向加密：通过对数据进行摘要计算生成密文，密文不可逆推还原。算法代表：MD5，SHA;  双向加密：与单向加密相反，可以把密文逆推还原成明文，双向加密又分为对称加密和非对称加密。 对称加密：指数据使用者必须拥有相同的密钥才可以进行加密解密，就像彼此约">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://a843611554.github.io/2019/07/24/非对称加签验签/1.png">
 <meta property="og:image" content="https://a843611554.github.io/2019/07/24/非对称加签验签/2.png">
-<meta property="og:updated_time" content="2019-08-03T12:43:46.479Z">
+<meta property="og:updated_time" content="2019-08-25T03:46:49.291Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RSA非对称加签">
-<meta name="twitter:description" content="场景在日常设计及开发中，为确保数据传输和数据存储的安全，可通过特定的算法，将数据明文加密成复杂的密文。目前主流加密手段大致可分为单向加密和双向加密。 单向加密：通过对数据进行摘要计算生成密文，密文不可逆推还原。算法代表：Base64，MD5，SHA;  双向加密：与单向加密相反，可以把密文逆推还原成明文，双向加密又分为对称加密和非对称加密。 对称加密：指数据使用者必须拥有相同的密钥才可以进行加密解">
+<meta name="twitter:description" content="场景在日常设计及开发中，为确保数据传输和数据存储的安全，可通过特定的算法，将数据明文加密成复杂的密文。目前主流加密手段大致可分为单向加密和双向加密。 单向加密：通过对数据进行摘要计算生成密文，密文不可逆推还原。算法代表：MD5，SHA;  双向加密：与单向加密相反，可以把密文逆推还原成明文，双向加密又分为对称加密和非对称加密。 对称加密：指数据使用者必须拥有相同的密钥才可以进行加密解密，就像彼此约">
 <meta name="twitter:image" content="https://a843611554.github.io/2019/07/24/非对称加签验签/1.png">
 
 
@@ -381,7 +381,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-03 20:43:46" itemprop="dateModified" datetime="2019-08-03T20:43:46+08:00">2019-08-03</time>
+                <time title="修改时间：2019-08-25 11:46:49" itemprop="dateModified" datetime="2019-08-25T11:46:49+08:00">2019-08-25</time>
               </span>
             
           
@@ -436,7 +436,7 @@
 
       
         <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>在日常设计及开发中，为确保数据传输和数据存储的安全，可通过特定的算法，将数据明文加密成复杂的密文。目前主流加密手段大致可分为单向加密和双向加密。</p>
-<p>单向加密：通过对数据进行摘要计算生成密文，密文不可逆推还原。算法代表：Base64，MD5，SHA; </p>
+<p>单向加密：通过对数据进行摘要计算生成密文，密文不可逆推还原。算法代表：MD5，SHA; </p>
 <p>双向加密：与单向加密相反，可以把密文逆推还原成明文，双向加密又分为对称加密和非对称加密。</p>
 <p>对称加密：指数据使用者必须拥有相同的密钥才可以进行加密解密，就像彼此约定的一串暗号。算法代表：DES，3DES，AES，IDEA，RC4，RC5;</p>
 <p>非对称加密：相对对称加密而言，无需拥有同一组密钥，非对称加密是一种“信息公开的密钥交换协议”。非对称加密需要公开密钥和私有密钥两组密钥，公开密钥和私有密钥是配对起来的，也就是说使用公开密钥进行数据加密，只有对应的私有密钥才能解密。这两个密钥是数学相关，用某用户密钥加密后的密文，只能使用该用户的加密密钥才能解密。如果知道了其中一个，并不能计算出另外一个。因此如果公开了一对密钥中的一个，并不会危害到另外一个密钥性质。这里把公开的密钥为公钥，不公开的密钥为私钥。算法代表：RSA。</p>
@@ -586,7 +586,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -607,7 +607,11 @@
         
           
         
-        <span class="site-state-item-count">2</span>
+          
+        
+          
+        
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span>
         </a>
       </div>
@@ -642,7 +646,23 @@
         
           
         
-        <span class="site-state-item-count">9</span>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -666,17 +686,6 @@
         
       
         <a href="https://github.com/a843611554" title="GitHub &rarr; https://github.com/a843611554" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
-      </span>
-    
-      <span class="links-of-author-item">
-      
-      
-        
-      
-      
-        
-      
-        <a href="mailto:a843611554@foxmail.com" title="E-Mail &rarr; mailto:a843611554@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
     
       <span class="links-of-author-item">
